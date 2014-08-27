@@ -1,23 +1,24 @@
 package main
 
 import (
+	"database/sql"
 	"errors"
 	"log"
 	"os"
 
 	"github.com/inappcloud/data"
-	"github.com/inappcloud/jsonapi"
+	_ "github.com/lib/pq"
 	"github.com/zenazn/goji"
 )
 
 func main() {
-	dbUrl := os.Getenv("DATABASE_URL")
+	url := os.Getenv("DATABASE_URL")
 
-	if len(dbUrl) == 0 {
+	if len(url) == 0 {
 		log.Fatal(errors.New("You must set DATABASE_URL environment variable."))
 	}
 
-	db, err := data.Open(dbUrl)
+	db, err := sql.Open("postgres", url)
 
 	if err != nil {
 		log.Fatal(err)
